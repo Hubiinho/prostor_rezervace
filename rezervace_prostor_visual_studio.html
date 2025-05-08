@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>Rezervace croissantů</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fffaf0;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #8b4513;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #5c4033;
+    }
+    input {
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      margin-top: 25px;
+      padding: 12px;
+      background-color: #deb887;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .success {
+      margin-top: 20px;
+      color: green;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Rezervuj si svůj croissant</h1>
+    <form id="croissantForm">
+      <label for="name">Tvé jméno:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="count">Počet croissantů:</label>
+      <input type="number" id="count" name="count" min="1" max="20" required>
+
+      <label for="time">Čas vyzvednutí:</label>
+      <input type="time" id="time" name="time" required>
+
+      <button type="submit">Odeslat rezervaci</button>
+      <div class="success" id="successMsg" style="display: none;">Rezervace odeslána!</div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("croissantForm");
+    const successMsg = document.getElementById("successMsg");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const data = {
+        name: form.name.value,
+        count: form.count.value,
+        time: form.time.value
+      };
+
+        fetch("https://script.google.com/macros/s/AKfycbwNQU0p3G7gX5w6zjYdPah9m2TSL_mJsdlkinMaydlMKAnMTnBVYXHki9dUhzPmOIKfXA/exec", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => res.text())
+      .then(() => {
+        successMsg.style.display = "block";
+        form.reset();
+      })
+      .catch(err => alert("Chyba při odesílání rezervace."));
+    });
+  </script>
+</body>
+</html>
